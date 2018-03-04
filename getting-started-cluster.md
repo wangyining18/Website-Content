@@ -15,7 +15,7 @@ These instructions have only been tested on:
 
 2. Download and extract the hadoop-2.6.0 binary into your machine. It's available at [hadoop-2.6.0.tar.gz](https://archive.apache.org/dist/hadoop/core/hadoop-2.6.0/hadoop-2.6.0.tar.gz).
 
-3. Set the environment variables in `~/.bashrc`.
+3. Set the environment variables in `vim ~/.bashrc`.
 ```bash
 export JAVA_HOME=<where Java locates>
 #e.g. ~/jdk1.8.0_91
@@ -58,9 +58,11 @@ Usage: hadoop [--config confdir] COMMAND
 Most commands print help when invoked w/o parameters.
 ```
 
-6. Modify the following files in Apache Hadoop distribution:
+6. Modify the following files in Apache Hadoop distribution: ()
 
-    (1).`$HADOOP_HOME/etc/hadoop/core-site.xml`:
+    (1).`vim $HADOOP_HOME/etc/hadoop/core-site.xml`: 
+ replace `${namenode}` with the IP address of your secondary node and `${user name}` with your username
+    
 ```xml
 <configuration>
   <property>
@@ -70,12 +72,12 @@ Most commands print help when invoked w/o parameters.
   <property>
     <name>hadoop.tmp.dir</name>
     <value>/tmp/hadoop-${user name}</value>
-    <description>A base for other temporary directories.</description>
+    <description>A base of other temporary directories.</description>
   </property>
 </configuration>
 ```
 
-    (2).`$HADOOP_HOME/etc/hadoop/hdfs-site.xml`:
+    (2).`vim $HADOOP_HOME/etc/hadoop/hdfs-site.xml`:
 ```xml
 <configuration>
   <property>
@@ -97,7 +99,7 @@ Most commands print help when invoked w/o parameters.
 </configuration>
 ```
 
-    (3).`$HADOOP_HOME/etc/hadoop/mapred-site.xml`:
+    (3).`vim $HADOOP_HOME/etc/hadoop/mapred-site.xml`:
 You will be creating this file. It doesn’t exist in the original package.
 ```xml
 <configuration>
@@ -116,7 +118,8 @@ You will be creating this file. It doesn’t exist in the original package.
 </configuration>
 ```
 
-    (4).`$HADOOP_HOME/etc/hadoop/yarn-site.xml`:
+    (4).`$HADOOP_HOME/etc/hadoop/yarn-site.xml`: 
+ replace `${namenode}` with the IP address of your secondary node and `${user name}` with your username
 ```xml
 <configuration>
   <property>
@@ -154,7 +157,7 @@ You will be creating this file. It doesn’t exist in the original package.
 </configuration>
 ```
 
-    (5).`$HADOOP_HOME/etc/hadoop/slaves`:
+    (5).`vim $HADOOP_HOME/etc/hadoop/slaves`:
 ```bash
 ${namenode}
 ${other node 1}
@@ -193,15 +196,15 @@ xxxxx ResourceManager
 
 1. Clone Harp repository. It is available at [DSC-SPIDAL/harp](https://github.com/DSC-SPIDAL/harp.git).
 ```bash
-$ git clone git@github.com:DSC-SPIDAL/harp.git
+$ git clone https://github.com/DSC-SPIDAL/harp.git
 ```
 
 2. Follow the [maven official instruction](http://maven.apache.org/install.html) to install maven.
 
-3. Add environment variables in `~/.bashrc`.
+3. Add environment variables in `vim ~/.bashrc`.
 ```bash
 export HARP_ROOD_DIR=<where Harp locates>
-#e.g. harp/harp-project
+#e.g. ~/harp
 export HARP_HOME=$HARP_ROOD_DIR/harp-project
 ```
 4. Run source command to set the envrionment variables.
@@ -252,6 +255,7 @@ jobConf.set("mapreduce.framework.name", "map-collective");
 1. Format datanode in other nodes.
 ```bash
 $ ssh ${other nodes}
+  #log into your secondary node
 $ hadoop datanode -format
 ```
 You have to do this step in every node except the namenode.
